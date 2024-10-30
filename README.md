@@ -6,7 +6,7 @@
 
 ## Overview
 
-automation scripts I use for my Arch install  feel free to use.
+collection automation scripts I use for my Arch install feel free to use.
 
 ## Nvidia_wayland_prep.sh
 
