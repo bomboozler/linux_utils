@@ -14,7 +14,7 @@ fixes wayland display issues on nvidia will work with any distro as long as it i
 
 ## install_packages.sh
 
-install the following packages:
+**install the following packages:**
 
 paru arch-gaming-meta arch-gaming-meta heroic-games-launcher-bin jellyfin-media-player localsend-bin payload-dumper-go-bin protonup-qt ventoy-bin fish htop fzf ripgrep fastfetch repo git
 
