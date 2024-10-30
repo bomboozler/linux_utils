@@ -6,7 +6,7 @@
 
 ## Overview
 
-Linux utils and automation scripts I use for my Arch build  feel free to use as well.
+Linux utils and automation scripts I use for my Arch build  feel free to use.
 
 ## Scripts
 
