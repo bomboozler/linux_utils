@@ -6,9 +6,18 @@
 
 ## Overview
 
-Linux utils and automation scripts I use for my Arch build  feel free to use.
+Automation scripts I use for my Arch install  feel free to use.
 
-## Scripts
+## nvidia_wayland_prep.sh
 
-nvidia_wayland_prep.sh - fixes wayland display issues on nvidia will work with any distro as long as it use modprob
+fixes wayland display issues on nvidia will work with any distro as long as it is using modprob
 
+## install_packages.sh
+
+install the following packages:
+
+paru arch-gaming-meta arch-gaming-meta heroic-games-launcher-bin jellyfin-media-player localsend-bin payload-dumper-go-bin protonup-qt ventoy-bin fish htop fzf ripgrep fastfetch repo git
+
+**excluding packges from  install_packages.sh**
+   ```bash
+   ./install_packages.sh -e "package2,package2"
