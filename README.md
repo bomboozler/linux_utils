@@ -1,4 +1,4 @@
-# Linux Utility Tool
+# Linux Utils
 
 ![Arch Linux Logo](https://archlinux.org/favicon.ico)
 
