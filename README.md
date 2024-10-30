@@ -6,13 +6,13 @@
 
 ## Overview
 
-Automation scripts I use for my Arch install  feel free to use.
+automation scripts I use for my Arch install  feel free to use.
 
-## nvidia_wayland_prep.sh
+## Nvidia_wayland_prep.sh
 
 fixes wayland display issues on nvidia will work with any distro as long as it is using modprob
 
-## install_packages.sh
+## Install_packages.sh
 
 **install the following packages:**
 
