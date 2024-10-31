@@ -44,7 +44,7 @@ rm -rf paru
 AUR_PACKAGES=("arch-gaming-meta" "heroic-games-launcher-bin" "jellyfin-media-player" "localsend-bin" "payload-dumper-go-bin" "protonup-qt" "ventoy-bin")
 
 # List of pacman packages to install
-PACMAN_PACKAGES=("fish" "htop" "fzf" "ripgrep" "fastfetch" "repo" "git")
+PACMAN_PACKAGES=("fish" "htop" "fzf" "ripgrep" "fastfetch" "repo" "git" "reflector")
 
 # Function to install packages while excluding specified ones
 install_packages() {
