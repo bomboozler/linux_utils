@@ -25,8 +25,10 @@ script will prompt you if you want to install the kernel with optimized repos or
 feel free to say no to both if you want to stick to what you have.
 
 **excluding packges from  install_packages.sh**
+
    ```bash
    ./install_packages.sh -e "package2,package2"
+   ```
 
 **update_repo.sh**
 
