@@ -1,0 +1,44 @@
+---
+- name: Install packages on Arch Linux
+  hosts: all
+  become: true
+  tasks:
+    - name: Update package database
+      pacman:
+        update_cache: yes
+
+    - name: Install required Pacman packages
+      pacman:
+        name:
+          - fish
+          - htop
+          - fzf
+          - ripgrep
+          - fastfetch
+          - repo
+          - git
+          - reflector
+        state: present
+
+    - name: Install paru AUR helper
+      git:
+        repo: https://aur.archlinux.org/paru.git
+        dest: /opt/paru
+        version: master
+
+    - name: Build and install paru
+      command: makepkg -si --noconfirm
+      args:
+        chdir: /opt/paru
+
+    - name: Install AUR packages using paru
+      command: paru -S --noconfirm {{ item }}
+      loop:
+        - arch-gaming-meta
+        - heroic-games-launcher-bin
+        - jellyfin-media-player
+        - localsend-bin
+        - payload-dumper-go-bin
+        - protonup-qt
+        - ventoy-bin
+
