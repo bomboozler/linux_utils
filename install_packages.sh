@@ -31,7 +31,6 @@ done
 
 # Convert exclude string into an array
 IFS=',' read -r -a EXCLUDE_ARRAY <<< "$EXCLUDE_PACKAGES"
-
 # Install paru from source
 echo "Installing paru AUR helper..."
 git clone https://aur.archlinux.org/paru.git
@@ -41,7 +40,7 @@ cd .. || exit
 rm -rf paru
 
 # List of AUR packages to install
-AUR_PACKAGES=("arch-gaming-meta" "heroic-games-launcher-bin" "jellyfin-media-player" "localsend-bin" "payload-dumper-go-bin" "protonup-qt" "ventoy-bin")
+    AUR_PACKAGES=("arch-gaming-meta" "heroic-games-launcher-bin" "jellyfin-media-player" "localsend-bin" "payload-dumper-go-bin" "protonup-qt" "ventoy-bin")
 
 # List of pacman packages to install
 PACMAN_PACKAGES=("fish" "htop" "fzf" "ripgrep" "fastfetch" "repo" "git" "reflector")
@@ -58,14 +57,38 @@ install_packages() {
         fi
     done
 }
-
+# asks user if he is sure he want to proceed and install packages and suggest he might want to exclude some packages using the option -e with the script
+read -p "Do you want to proceed and install packages? [y/n] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
 # Install AUR packages
-echo "Installing AUR packages..."
-install_packages "${AUR_PACKAGES[@]}"
+    echo "Installing AUR packages..."
+    install_packages "${AUR_PACKAGES[@]}"
 
 # Install pacman packages
-echo "Installing pacman packages..."
-install_packages "${PACMAN_PACKAGES[@]}"
+    echo "Installing pacman packages..."
+    install_packages "${PACMAN_PACKAGES[@]}"
+    echo "Installation complete!"
+fi
 
-echo "Installation complete!"
+#asks user if he wats to add cachyos kernel and repos
+read -p "Do you want to add CachyOS kernel and optimized repos (say no if you want just cachyos kernel)? [y/n] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    echo "Adding CachyOS kernel and repos..."
+    curl https://mirror.cachyos.org/cachyos-repo.tar.xz -o cachyos-repo.tar.xz
+    tar xvf cachyos-repo.tar.xz && cd cachyos-repo
+    sudo ./cachyos-repo.sh
+    sudo pacman -S --noconfirm linux-cachyos
+    echo "Optimized repos and cachyos kernel added successfully!"
+fi
+#asks user if he wants just the cachyos kernel and installs it
 
+read -p "Do you want just the CachyOS kernel? [y/n] " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+     paru -S --noconfirm linux-cachyos
+fi
