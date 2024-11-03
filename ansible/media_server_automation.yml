@@ -1,0 +1,145 @@
+---
+- name: Provision Docker environment
+  hosts: all
+  become: true
+
+  vars:
+    containers:
+      - name: immich_server
+        image: ghcr.io/immich-app/immich-server:release
+        ports:
+          - "2283:2283"
+        command: ["tini", "--", "/bin/bash", "s..."]
+      
+      - name: immich_redis
+        image: redis:6.2-alpine
+        ports: ["6379"]
+
+      - name: immich_postgres
+        image: tensorchord/pgvecto-rs:pg14-v0.2.0
+        ports: ["5432"]
+
+      - name: immich_machine_learning
+        image: ghcr.io/immich-app/immich-machine-learning:release
+        command: ["tini", "--", "./start.sh"]
+
+      - name: autoheal
+        image: willfarrell/autoheal:latest
+
+      - name: sabnzbd
+        image: lscr.io/linuxserver/sabnzbd:latest
+        ports:
+          - "8080:8080"
+
+      - name: transmission
+        image: linuxserver/transmission:latest
+        ports:
+          - "9091:9091"
+          - "51413:51413"
+          - "51413/udp"
+
+      - name: Bazarr
+        image: linuxserver/bazarr:latest
+        ports:
+          - "6767:6767"
+
+      - name: dozzle
+        image: amir20/dozzle:latest
+        ports:
+          - "8888:8080"
+
+      - name: librespeed
+        image: linuxserver/librespeed:latest
+        ports:
+          - "32768:80"
+          - "443"
+
+      - name: jellyfin
+        image: linuxserver/jellyfin:latest
+        ports:
+          - "8096:8096"
+          - "8920:8920"
+
+      - name: radarr
+        image: ghcr.io/hotio/radarr:latest
+        ports:
+          - "7878:7878"
+
+      - name: sonarr
+        image: linuxserver/sonarr:latest
+        ports:
+          - "8989:8989"
+
+      - name: portainer
+        image: portainer/portainer-ee:latest
+        ports:
+          - "8000:8000"
+          - "9443:9443"
+          - "9000"
+
+      - name: lidarr
+        image: hotio/lidarr:release
+        ports:
+          - "8686:8686"
+
+      - name: prowlarr
+        image: ghcr.io/linuxserver/prowlarr:latest
+        ports:
+          - "9696:9696"
+
+      - name: jellyseerr
+        image: fallenbagel/jellyseerr:latest
+        ports:
+          - "5055:5055"
+
+      - name: pihole
+        image: pihole/pihole:latest
+        ports:
+          - "53:53/udp"
+          - "53:53/tcp"
+          - "67:67/udp"
+          - "1010:80"
+          - "4443:443"
+
+      - name: FlareSolverr
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        ports:
+          - "8191:8191"
+          - "8192"
+
+      - name: watchtower
+        image: containrrr/watchtower:latest
+        ports:
+          - "8080"
+
+  tasks:
+    - name: Update dnf cache
+      dnf:
+        update_cache: yes
+
+    - name: Install Docker
+      dnf:
+        name: docker
+        state: present
+
+    - name: Enable and start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Install Docker Compose
+      dnf:
+        name: docker-compose
+        state: present
+
+    - name: Create Docker containers
+      docker_container:
+        name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        ports: "{{ item.ports | default([]) }}"
+        command: "{{ item.command | default([]) }}"
+        restart_policy: always
+        state: started
+      loop: "{{ containers }}"
+
