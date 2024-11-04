@@ -1,44 +1,102 @@
 ---
-- name: Install packages on Arch Linux
+- name: Install packages based on Linux distribution
   hosts: all
   become: true
   tasks:
-    - name: Update package database
-      pacman:
-        update_cache: yes
+    - name: Update package database and install packages on Arch Linux
+      when: ansible_os_family == "Archlinux"
+      block:
+        - name: Update package database
+          pacman:
+            update_cache: yes
 
-    - name: Install required Pacman packages
-      pacman:
-        name:
-          - fish
-          - htop
-          - fzf
-          - ripgrep
-          - fastfetch
-          - repo
-          - git
-          - reflector
-        state: present
+        - name: Install required Pacman packages
+          pacman:
+            name:
+              - fish
+              - htop
+              - fzf
+              - ripgrep
+              - fastfetch
+              - repo
+              - git
+              - reflector
+            state: present
 
-    - name: Install paru AUR helper
-      git:
-        repo: https://aur.archlinux.org/paru.git
-        dest: /opt/paru
-        version: master
+        - name: Install paru AUR helper
+          git:
+            repo: https://aur.archlinux.org/paru.git
+            dest: /opt/paru
+            version: master
 
-    - name: Build and install paru
-      command: makepkg -si --noconfirm
-      args:
-        chdir: /opt/paru
+        - name: Build and install paru
+          command: makepkg -si --noconfirm
+          args:
+            chdir: /opt/paru
 
-    - name: Install AUR packages using paru
-      command: paru -S --noconfirm {{ item }}
-      loop:
-        - arch-gaming-meta
-        - heroic-games-launcher-bin
-        - jellyfin-media-player
-        - localsend-bin
-        - payload-dumper-go-bin
-        - protonup-qt
-        - ventoy-bin
+        - name: Install AUR packages using paru
+          command: paru -S --noconfirm {{ item }}
+          loop:
+            - arch-gaming-meta
+            - heroic-games-launcher-bin
+            - jellyfin-media-player
+            - localsend-bin
+            - payload-dumper-go-bin
+            - protonup-qt
+            - ventoy-bin
+
+    - name: Update package database and install packages on Debian/Ubuntu
+      when: ansible_os_family == "Debian"
+      block:
+        - name: Add non-free and contrib to apt sources
+          lineinfile:
+            path: /etc/apt/sources.list
+            line: "{{ item }}"
+            state: present
+          loop:
+            - "deb http://deb.debian.org/debian/ stable main contrib non-free"
+            - "deb http://deb.debian.org/debian/ stable-updates main contrib non-free"
+            - "deb http://security.debian.org/debian-security stable-security main contrib non-free"
+          notify: apt_update
+
+        - name: Install required packages
+          apt:
+            name:
+              - fish
+              - htop
+              - fzf
+              - ripgrep
+              - git
+              - steam
+              - neofetch
+            state: present
+
+    - name: Update package database and install packages on Fedora
+      when: ansible_os_family == "RedHat"
+      block:
+        - name: Add RPM Fusion free repo
+          dnf:
+            name: https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts['os_version'] }}.noarch.rpm
+            state: present
+
+        - name: Add RPM Fusion non free repo
+          dnf:
+            name: https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts['os_version'] }}.noarch.rpm
+            state: present
+
+        - name: Update dnf cache
+          dnf:
+            update_cache: yes
+
+        - name: Install required packages
+          dnf:
+            name:
+              - fish
+              - htop
+              - fzf
+              - ripgrep
+              - fastfetch
+              - git
+              - steam
+            state: present
 
