@@ -20,6 +20,7 @@
               - fastfetch
               - repo
               - git
+              - ncdu
               - reflector
             state: present
 
@@ -69,6 +70,7 @@
               - git
               - steam
               - neofetch
+              - ncdu
             state: present
 
     - name: Update package database and install packages on Fedora
@@ -98,5 +100,6 @@
               - fastfetch
               - git
               - steam
+              - ncdu
             state: present
 
