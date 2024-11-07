@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if the system is Arch Linux
+if ! grep -q "ID=arch" /etc/os-release; then
+    echo "This script is designed to run on Arch Linux only."
+    exit 1
+fi
+
 # Update the mirror list using Reflector
 sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist
 
