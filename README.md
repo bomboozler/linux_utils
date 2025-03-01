@@ -12,6 +12,10 @@ collection automation scripts I use for my Arch install feel free to use.
 
 fixes wayland display issues on nvidia will work with any distro as long as it is using modprob
 
+## ssh-unauth.sh
+
+script that print logs of unauthorized ssh access and send mail to administrator 
+
 ## Install_packages.sh
 
 **install the following packages:**
