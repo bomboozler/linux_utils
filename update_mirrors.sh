@@ -14,7 +14,7 @@ sudo pacman -Syy
 
 # Add alias to .bashrc if it doesn't already exist
 if ! grep -q "alias update-mirror=" ~/.bashrc; then
-    echo "alias update-mirror='sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist && sudo pacman -Syy'" >> ~/.bashrc
+    echo "alias update-mirror='sudo reflector --latest 10 --sort rate --protocol https --save /etc/pacman.d/mirrorlist'" >> ~/.bashrc
     echo "Alias 'update-mirror' added to .bashrc."
 else
     echo "Alias 'update-mirror' already exists in .bashrc."
