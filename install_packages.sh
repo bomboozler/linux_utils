@@ -40,10 +40,10 @@ cd .. || exit
 rm -rf paru
 
 # List of AUR packages to install
-    AUR_PACKAGES=("arch-gaming-meta" "heroic-games-launcher-bin" "jellyfin-media-player" "localsend-bin" "payload-dumper-go-bin" "ventoy-bin")
+    AUR_PACKAGES=("goverlay" "heroic-games-launcher-bin" "jellyfin-media-player" "localsend-bin" "payload-dumper-go-bin" "ventoy-bin")
 
 # List of pacman packages to install
-PACMAN_PACKAGES=("lact" "ghostty" "tmux" "zed" "htop" "fzf" "ripgrep" "fastfetch" "repo" "git" "reflector")
+PACMAN_PACKAGES=("steam" "wine" "lact" "ghostty" "tmux" "zed" "htop" "fzf" "ripgrep" "fastfetch" "repo" "git" "reflector")
 
 # Function to install packages while excluding specified ones
 install_packages() {
